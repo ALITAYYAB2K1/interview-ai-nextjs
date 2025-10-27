@@ -16,12 +16,16 @@ const aj = arcjet({
     slidingWindow({
       mode: "LIVE",
       interval: "1m",
-      max: 30,
+      max: 50,
     }),
   ],
 });
 
 export default clerkMiddleware(async (auth, req) => {
+  const decision = await aj.protect(req);
+  if (decision.isDenied()) {
+    return new Response(null, { status: 403, statusText: "Forbidden" });
+  }
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
