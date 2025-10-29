@@ -11,6 +11,7 @@ import { Bot, BrainCircuit, User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserProfile, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
+import { UserAvatar } from "@/components/UserAvatar";
 
 export function Navbar({ user }: { user: { name: string; imageUrl: string } }) {
   const router = useRouter();
@@ -28,16 +29,19 @@ export function Navbar({ user }: { user: { name: string; imageUrl: string } }) {
         <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="cursor-pointer hover:shadow-md transition-shadow">
-              <AvatarImage src={user.imageUrl} alt={user.name} />
-              <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback>
-            </Avatar>
+            <UserAvatar user={user} />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => openUserProfile()}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => openUserProfile()}
+            >
               <User className="mr-2 size-4" /> Profile
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => signOut(() => router.push("/"))}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => signOut(() => router.push("/"))}
+            >
               <LogOut className="mr-2 size-4" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
